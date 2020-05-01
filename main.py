@@ -4,16 +4,26 @@ import random
 import requests
 from auth import TOKEN
 from time import sleep
+import pymorphy2
+
+morph = pymorphy2.MorphAnalyzer()
+bot = commands.Bot(command_prefix='#!')
+
+@bot.command(name='numerals')
+async def numerals(ctx, word, number):
+    word_p = morph.parse(word)[0]
+    await ctx.send(f"{number} {word_p.make_agree_with_number(int(number)).word}")
 
 
-bot = commands.Bot(command_prefix='')
-
-
-@bot.command(name='set_timer')
-async def set_timer(ctx, *args):
-    num = args
-    sleep(int(args[1]) * 3600 + int(args[3]) * 60)
-    await ctx.send("Time X has come!")
+@bot.command(name='alive')
+async def alive(ctx, word):
+    word_p = morph.parse(word)[0]
+    live = morph.parse('живой')[0]
+    if 'NOUN' == word_p.tag.POS:
+        if 'anim' == word_p.tag.animacy:
+            await ctx.send(f"{word.capitalize()} {live.inflect({word_p.tag.gender, word_p.tag.number}).word}")
+        else:
+            await ctx.send(f"{word.capitalize()} не {live.inflect({word_p.tag.gender, word_p.tag.number}).word}")
 
 
 bot.run(TOKEN)
