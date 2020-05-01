@@ -26,4 +26,20 @@ async def alive(ctx, word):
             await ctx.send(f"{word.capitalize()} не {live.inflect({word_p.tag.gender, word_p.tag.number}).word}")
 
 
+@bot.command(name='noun')
+async def noun(ctx, word, one, two):
+    word_p = morph.parse(word)[0]
+    await ctx.send(word_p.inflect({two, one}).word)
+
+
+@bot.command(name='inf')
+async def inf(ctx, word):
+    await ctx.send(morph.parse(word)[0].normal_form)
+
+
+
+
+
+
+
 bot.run(TOKEN)
