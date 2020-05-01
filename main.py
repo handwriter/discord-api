@@ -1,11 +1,6 @@
 import discord
-from discord.ext import commands
-import random
-import os
-import subprocess
 import requests
-
-TOKEN = "NzA1NjA3ODM5NTkwMTIxNTAz.XquO1A.ySjg8QISQHZUKpn4UnqCldIJAPk"
+from auth import TOKEN
 
 
 class DogsAndCats(discord.Client):
